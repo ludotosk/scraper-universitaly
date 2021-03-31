@@ -46,7 +46,8 @@ async function main(page, tipo_laurea) {
             } else {
                 const corsoObj = linee[i].querySelectorAll('b')[0]
                 if (corsoObj) {
-                    let corso = corsoObj.innerText.replaceAll('\"','')
+                    let corso = corsoObj.innerText.replaceAll('\"','').toLowerCase()
+                    corso = corso.charAt(0).toUpperCase() + corso.slice(1)
 
                     const testo = linee[i].textContent
                     var citta = /(?<=, )[A-Z']+ [A-Z']+ [A-Z']+(?=  )|(?<=, )[A-Z']+(?=  )|(?<=, )[A-Z']+ [A-Z']+(?=  )|(?<=, )[A-Z']+ [A-Z']+ [A-Z']+ [A-Z']+(?=  )|(?<=, )[A-Z']+ - [A-Z']+(?=  )/gm.exec(testo)
@@ -55,7 +56,8 @@ async function main(page, tipo_laurea) {
 
                     const durata = linee[i].getElementsByClassName('icona')[2].getElementsByTagName('img')[0].getAttribute('title').slice(8)
 
-                    const lingua = linee[i].getElementsByClassName('icona')[3].getElementsByTagName('img')[0].getAttribute('title').slice(8)
+                    var lingua = linee[i].getElementsByClassName('icona')[3].getElementsByTagName('img')[0].getAttribute('title').slice(8)
+                    //lingua = lingua.charAt(0) + lingua.charAt(1)
 
                     const link = linee[i].getElementsByTagName('a')[1].href
 
@@ -80,10 +82,11 @@ async function laucnhScrape() {
     const browser = await puppeteer.launch({ headless: true });
     const pagePrimo = await browser.newPage();
     const pageSecondo = await browser.newPage();
+    const pageCorsi = await browser.newPage();
 
     console.log('tabelle caricate')
 
-    await Promise.all([main(pagePrimo, 'M1'), main(pageSecondo, 'M2')])
+    await Promise.all([main(pagePrimo, 'M1'), main(pageSecondo, 'M2'), main(pageCorsi, 'CP')])
 
     console.log('numero di corsi: ' + array.length)
 
@@ -100,4 +103,3 @@ async function laucnhScrape() {
 }
 
 laucnhScrape()
-

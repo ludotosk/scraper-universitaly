@@ -82,6 +82,8 @@ async function ScrapeArea(page) {
             const accessoTxt = await accesso.jsonValue();
             if (accessoTxt == 'Libero') {
                 a = 'No';
+            } else {
+                a = 'Sì'
             }
 
             [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[2]');
@@ -346,7 +348,7 @@ async function laucnhScrape() {
     console.log('numero corsi post pulizia');
     console.log(corsi.length);
 
-    fs.writeFile('./src/corsi.json', JSON.stringify(corsi), function (err) {
+    fs.writeFile('corsi.json', JSON.stringify(corsi), function (err) {
         if (err) return console.log(err);
         console.log('corsi > corsi.json');
         const fine = (Date.now() - inizio) / 1000;

@@ -32,11 +32,16 @@ async function main(page, tipo_laurea) {
         const linee = document.querySelectorAll('tr');
         var array = [];
         var uni = ''
+        var linkUni = ''
 
         for (let i = 0; i < linee.length; i++) {
             const universita = linee[i].querySelectorAll('h3')[0]
             if (universita) {
                 uni = universita.textContent
+                linkUni = linee[i].querySelectorAll('a')[1]
+                if (!linkUni) {
+                    linkUni = '#'
+                }
                 if (uni == 'LUM "Jean Monnet"') {
                     uni = 'Libera università mediterranea Giuseppe Degennaro'
                 }
@@ -59,9 +64,17 @@ async function main(page, tipo_laurea) {
                     var lingua = linee[i].getElementsByClassName('icona')[3].getElementsByTagName('img')[0].getAttribute('title').slice(8)
                     //lingua = lingua.charAt(0) + lingua.charAt(1)
 
-                    const link = linee[i].getElementsByTagName('a')[1].href
+                    var link = linee[i].getElementsByTagName('a')[1].href
 
-                    const tipo = linee[i].getElementsByTagName('i')[0].textContent
+                    if (link == "http://dato%20non%20disponibile/") {
+                        link = linkUni
+                    }
+
+                    var tipo = linee[i].getElementsByTagName('i')[0].textContent
+
+                    if (tipo == "Corso di Perfezionamento/Alta Formazione (monte ore minimo 200 ore)") {
+                        tipo = "Corso di Perfezionamento/Alta Formazione"
+                    }
 
                     array.push({ uni, corso, citta, durata, lingua, link, tipo })
                 }

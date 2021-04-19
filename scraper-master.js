@@ -38,8 +38,9 @@ async function main(page, tipo_laurea) {
             const universita = linee[i].querySelectorAll('h3')[0]
             if (universita) {
                 uni = universita.textContent
-                linkUni = linee[i].querySelectorAll('a')[1]
-                if (!linkUni) {
+                if (linee[i].querySelectorAll('a')[1]){
+                    linkUni = linee[i].querySelectorAll('a')[1].getAttribute('href')
+                } else {
                     linkUni = '#'
                 }
                 if (uni == 'LUM "Jean Monnet"') {

@@ -16,6 +16,8 @@ async function ScrapeArea(page) {
     var a = 'Sì';
     var c;
     var e = 0;
+    var o = 0;
+    var inter = 0;
     var s;
     var linkUniTxt = '';
     for (i = 1; i < records.length + 1; i++) {
@@ -76,6 +78,14 @@ async function ScrapeArea(page) {
                 }
             }
 
+            [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[7]/img');
+            if (el != undefined) {
+                const teledidattica = await el.getProperty('alt');
+                const teleTxt = await teledidattica.jsonValue();
+                if (teleTxt == "teledidattica") {
+                    o = 1;
+                }
+            }
 
             [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[6]/img');
             const accesso = await el.getProperty('title');
@@ -89,13 +99,23 @@ async function ScrapeArea(page) {
             [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[2]');
             const citta = await el.getProperty('innerText');
             s = await citta.jsonValue();
-            var indexInzio = s.lastIndexOf(' , ');   
+            var indexInzio = s.lastIndexOf(' , ');
             var indexFine = s.indexOf('\n');
-            s = s.substring(indexInzio,indexFine);
-            s = s.slice(3,s.length);
+            s = s.substring(indexInzio, indexFine);
+            s = s.slice(3, s.length);
+
+            [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[9]/img');
+            if (el != undefined) {
+                const internazionale = await el.getProperty('title');
+                const intTxt = await internazionale.jsonValue();
+                console.log(intTxt);
+                if (intTxt == "Corso a carattere internazionale") {
+                    inter = 1;
+                }
+            }
 
             if (n != '') {
-                corsi.push({ n, h, t, u, a, c, e, s });
+                corsi.push({ n, h, t, u, a, c, e, s, o, inter });
             }
         }
     }
@@ -321,29 +341,29 @@ async function laucnhScrape() {
         }
     }
 
- /*    var lista = JSON.parse(JSON.stringify(corsi));
-
-    for (let x = 0; x < lista.length; x++) {
-        delete lista[x].h;
-        delete lista[x].c;
-        delete lista[x].e;
-    }
-
-    fs.writeFile('./src/corsi.json', JSON.stringify(lista), function (err) {
-        if (err) return console.log(err);
-        console.log('lista > corsi.json');
-    });
-
-    var nocitta = JSON.parse(JSON.stringify(corsi));
-
-    for (let x = 0; x < nocitta.length; x++) {
-        delete nocitta[x].s;
-    }
-
-    fs.writeFile('./src/corsi.json', JSON.stringify(nocitta), function (err) {
-        if (err) return console.log(err);
-        console.log('corsi > corsi.json');
-    }); */
+    /*    var lista = JSON.parse(JSON.stringify(corsi));
+   
+       for (let x = 0; x < lista.length; x++) {
+           delete lista[x].h;
+           delete lista[x].c;
+           delete lista[x].e;
+       }
+   
+       fs.writeFile('./src/corsi.json', JSON.stringify(lista), function (err) {
+           if (err) return console.log(err);
+           console.log('lista > corsi.json');
+       });
+   
+       var nocitta = JSON.parse(JSON.stringify(corsi));
+   
+       for (let x = 0; x < nocitta.length; x++) {
+           delete nocitta[x].s;
+       }
+   
+       fs.writeFile('./src/corsi.json', JSON.stringify(nocitta), function (err) {
+           if (err) return console.log(err);
+           console.log('corsi > corsi.json');
+       }); */
 
     console.log('numero corsi post pulizia');
     console.log(corsi.length);

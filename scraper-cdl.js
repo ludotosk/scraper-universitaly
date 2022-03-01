@@ -10,17 +10,19 @@ var corsi = [];
 async function ScrapeArea(page) {
     const records = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr');
     var u = '';
-    var i;
-    var h;
-    var t;
-    var a = 'Sì';
-    var c;
-    var e = 0;
-    var o = 0;
-    var inter = 0;
-    var s;
     var linkUniTxt = '';
     for (i = 1; i < records.length + 1; i++) {
+        //azzero a ogni ciclo le variabili
+        var h;
+        var t;
+        var a = 'Sì';
+        var c;
+        var e = 0;
+        var o = 0;
+        var inter = 0;
+        var s;
+       
+
         var [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[2]/strong');
         if (el == undefined) {
             [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/th/h3');
@@ -108,7 +110,7 @@ async function ScrapeArea(page) {
             if (el != undefined) {
                 const internazionale = await el.getProperty('title');
                 const intTxt = await internazionale.jsonValue();
-                console.log(intTxt);
+                //console.log(intTxt);
                 if (intTxt == "Corso a carattere internazionale") {
                     inter = 1;
                 }
@@ -130,7 +132,7 @@ async function laucnhScrape() {
 
     console.log('Start');
 
-    const browser = await puppeteer.launch({ headless: true, });
+    const browser = await puppeteer.launch({ headless: false, });
     const page = await browser.newPage();
 
     console.log('Browser aperto');

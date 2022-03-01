@@ -26,7 +26,7 @@ async function main(page, tipo_laurea) {
 
     await page.waitForSelector('#ui-accordion-colonna-dx-panel-1 > table > tbody > tr > td:nth-child(4)')
 
-    console.log('caricato ' + tipo_laurea)    
+    console.log('caricato ' + tipo_laurea)
 
     const risultati = await page.evaluate(() => {
         const linee = document.querySelectorAll('tr');
@@ -38,7 +38,7 @@ async function main(page, tipo_laurea) {
             const universita = linee[i].querySelectorAll('h3')[0]
             if (universita) {
                 uni = universita.textContent
-                if (linee[i].querySelectorAll('a')[1]){
+                if (linee[i].querySelectorAll('a')[1]) {
                     linkUni = linee[i].querySelectorAll('a')[1].getAttribute('href')
                 } else {
                     linkUni = '#'
@@ -52,7 +52,7 @@ async function main(page, tipo_laurea) {
             } else {
                 const corsoObj = linee[i].querySelectorAll('b')[0]
                 if (corsoObj) {
-                    let corso = corsoObj.innerText.replaceAll('\"','').toLowerCase()
+                    let corso = corsoObj.innerText.replaceAll('\"', '').toLowerCase()
                     corso = corso.charAt(0).toUpperCase() + corso.slice(1)
 
                     const testo = linee[i].textContent
@@ -63,7 +63,7 @@ async function main(page, tipo_laurea) {
                     const durata = linee[i].getElementsByClassName('icona')[2].getElementsByTagName('img')[0].getAttribute('title').slice(8)
 
                     var lingua = linee[i].getElementsByClassName('icona')[3].getElementsByTagName('img')[0].getAttribute('title').slice(8)
-                    //lingua = lingua.charAt(0) + lingua.charAt(1)
+                        //lingua = lingua.charAt(0) + lingua.charAt(1)
 
                     var link = linee[i].getElementsByTagName('a')[1].href
 
@@ -93,7 +93,7 @@ async function main(page, tipo_laurea) {
 }
 
 async function laucnhScrape() {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: false });
     const pagePrimo = await browser.newPage();
     const pageSecondo = await browser.newPage();
     const pageCorsi = await browser.newPage();
@@ -106,7 +106,7 @@ async function laucnhScrape() {
 
     browser.close();
 
-    fs.writeFile('./master.json', JSON.stringify(array), function (err) {
+    fs.writeFile('./master.json', JSON.stringify(array), function(err) {
         if (err) return console.log(err);
         console.log('master > master.json');
         const fine = (Date.now() - inizio) / 1000;

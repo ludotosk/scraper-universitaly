@@ -21,7 +21,7 @@ async function ScrapeArea(page) {
         var o = 0;
         var inter = 0;
         var s;
-       
+
 
         var [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[2]/strong');
         if (el == undefined) {
@@ -111,7 +111,7 @@ async function ScrapeArea(page) {
                 const internazionale = await el.getProperty('title');
                 const intTxt = await internazionale.jsonValue();
                 //console.log(intTxt);
-                if (intTxt == "Corso a carattere internazionale") {
+                if (intTxt == "Corso a rilascio titolo doppio o congiunto") {
                     inter = 1;
                 }
             }
@@ -132,7 +132,7 @@ async function laucnhScrape() {
 
     console.log('Start');
 
-    const browser = await puppeteer.launch({ headless: false, });
+    const browser = await puppeteer.launch({ headless: true, });
     const page = await browser.newPage();
 
     console.log('Browser aperto');
@@ -325,11 +325,9 @@ async function laucnhScrape() {
     console.log('numero corsi pre pulizia');
     console.log(corsi.length);
 
-    corsi.sort(function (a, b) {
-        if (a.n.toLowerCase() < b.n.toLowerCase()
-        ) return -1;
-        if (a.n.toLowerCase() > b.n.toLowerCase()
-        ) return 1;
+    corsi.sort(function(a, b) {
+        if (a.n.toLowerCase() < b.n.toLowerCase()) return -1;
+        if (a.n.toLowerCase() > b.n.toLowerCase()) return 1;
         return 0;
     });
 
@@ -370,7 +368,7 @@ async function laucnhScrape() {
     console.log('numero corsi post pulizia');
     console.log(corsi.length);
 
-    fs.writeFile('corsi.json', JSON.stringify(corsi), function (err) {
+    fs.writeFile('corsi.json', JSON.stringify(corsi), function(err) {
         if (err) return console.log(err);
         console.log('corsi > corsi.json');
         const fine = (Date.now() - inizio) / 1000;

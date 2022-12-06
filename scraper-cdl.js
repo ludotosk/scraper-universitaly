@@ -59,10 +59,10 @@ async function ScrapeArea(page) {
             [el] = await page.$x('/html/body/div[3]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[' + i + ']/td[3]/span');
             const classe = await el.getProperty('textContent');
             const classeTxt = await classe.jsonValue();
-            if (classeTxt.slice(0, 2) == 'L-') {
+            if (classeTxt.slice(0, 2) == 'L-' || classeTxt.slice(0, 5) == 'L/SNT') {
                 t = 'Triennale';
             } else {
-                if (classeTxt == 'LM-4 C.U.' || classeTxt == 'LMR/02' || classeTxt == 'LM-13' || classeTxt == 'LMG/01' || classeTxt == 'LM-41' || classeTxt == 'LM-42' || classeTxt == 'LM-46' || classeTxt.slice(0, 2) == 'L/' || classeTxt == 'LM-85 bis') {
+                if (classeTxt == 'LM-4 C.U.' || classeTxt == 'LMR/02' || classeTxt == 'LM-13' || classeTxt == 'LMG/01' || classeTxt == 'LM-41' || classeTxt == 'LM-42' || classeTxt == 'LM-46' || classeTxt == 'LM-85 bis') {
                     t = 'Magistrale a Ciclo Unico';
                 } else {
                     t = 'Magistrale';
